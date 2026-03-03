@@ -107,7 +107,16 @@ A list of class \code{bclogit} containing:
 \item{posterior_samples}{Raw posterior samples as a 3D array (iterations x chains x parameters) from \code{rstan::extract(model, permuted = FALSE)}. Only populated when \code{return_raw_stan_output = TRUE}; \code{NULL} otherwise.}
 \item{concordant_model}{The fitted model object for the concordant pairs/reservoir (GLM/GEE/GLMM).}
 \item{matched_data}{The processed matched pairs data from the premodeling step.}
-\item{prior_info}{Information about the prior derived from concordant pairs.}
+\item{prior_info}{A list with elements \code{mu} (prior mean vector), \code{Sigma}
+(prior covariance matrix), and \code{fallbacks} (a character vector naming every
+robustness fallback that was triggered during prior construction, or
+\code{character(0)} if none were needed). Possible fallback names are:
+\code{"insufficient_concordant_pairs"} (too few concordant pairs; diffuse prior used),
+\code{"na_in_prior_mean"} (NAs in prior mean replaced with 0),
+\code{"na_in_prior_covariance"} (NAs in prior covariance replaced with \code{diag(100)}),
+\code{"glm_fallback"} (non-positive-definite GEE/GLMM covariance; re-fitted via GLM),
+\code{"diffuse_prior"} (non-positive-definite covariance replaced with \code{diag(100)}).
+}
 \item{call}{The function call.}
 \item{terms}{The model terms.}
 \item{num_discordant}{Number of discordant pairs used.}
@@ -122,8 +131,9 @@ A list of class \code{"bclogit"} containing:
 Only populated when \code{return_raw_stan_output = TRUE}; \code{NULL} otherwise.}
 \item{concordant_model}{The fitted model object for the concordant pairs (GLM, GEE, or GLMM).}
 \item{matched_data}{The processed matched pairs data from the C++ pre-modeling step.}
-\item{prior_info}{A list with elements \code{mu} (prior mean vector) and \code{Sigma}
-(prior covariance matrix) derived from the concordant pairs model.}
+\item{prior_info}{A list with elements \code{mu} (prior mean vector), \code{Sigma}
+(prior covariance matrix), and \code{fallbacks} (character vector of robustness
+fallbacks triggered; \code{character(0)} if none).}
 \item{call}{The function call.}
 \item{terms}{The model terms.}
 \item{xlevels}{Factor level information (always \code{NULL} for this method).}

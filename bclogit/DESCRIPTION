@@ -1,6 +1,6 @@
 Package: bclogit
 Title: Conditional Logistic Regression
-Version: 1.1
+Version: 1.1.1
 Authors@R: c(
     person("Adam", "Kapelner", email = "kapelner@qc.cuny.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-5985-6792")),
     person("Jacob", "Tennenbaum", email = "Jacob.Tennenbaum51@qmail.cuny.edu", role = c("aut"), comment = c(ORCID = "0009-0006-1408-5035"))

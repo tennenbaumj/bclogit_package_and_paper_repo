@@ -319,13 +319,16 @@ test_that("bclogit result contains all documented components", {
   }
 })
 
-test_that("bclogit prior_info has mu and Sigma of correct dimensions", {
+test_that("bclogit prior_info has mu, Sigma, and fallbacks of correct form", {
   pi  <- .fit$prior_info
   k   <- length(coef(.fit))
   expect_equal(length(pi$mu), k)
   expect_equal(dim(pi$Sigma), c(k, k))
   expect_false(anyNA(pi$mu))
   expect_false(anyNA(pi$Sigma))
+  # No fallbacks expected on clean data with GLM
+  expect_true(is.character(pi$fallbacks))
+  expect_equal(length(pi$fallbacks), 0L)
 })
 
 test_that("bclogit Sigma_con passed to Stan is positive definite", {
@@ -343,25 +346,27 @@ test_that("bclogit treatment prior variance equals prior_variance_treatment", {
 # 6. Numerical stability: GEE and GLMM prior covariance safeguards
 # =============================================================================
 
-test_that("GEE prior_info Sigma is positive definite and symmetric", {
+test_that("GEE prior_info Sigma is positive definite and symmetric, fallbacks is character", {
   d   <- gen(n_pairs = 60, p = 2, seed = 21)
   fit <- bclogit_fit(d, concordant_method = "GEE")
   S   <- fit$prior_info$Sigma
   expect_equal(S, t(S), tolerance = 1e-10)
   expect_true(tryCatch({ chol(S); TRUE }, error = function(e) FALSE))
   expect_false(anyNA(S))
+  expect_true(is.character(fit$prior_info$fallbacks))
 })
 
-test_that("GLMM prior_info Sigma is positive definite and symmetric", {
+test_that("GLMM prior_info Sigma is positive definite and symmetric, fallbacks is character", {
   d   <- gen(n_pairs = 60, p = 2, seed = 31)
   fit <- bclogit_fit(d, concordant_method = "GLMM")
   S   <- fit$prior_info$Sigma
   expect_equal(S, t(S), tolerance = 1e-10)
   expect_true(tryCatch({ chol(S); TRUE }, error = function(e) FALSE))
   expect_false(anyNA(S))
+  expect_true(is.character(fit$prior_info$fallbacks))
 })
 
-test_that("GLMM GLM-fallback triggers on near-degenerate concordant data and yields valid Sigma", {
+test_that("GLMM GLM-fallback triggers on near-degenerate concordant data, yields valid Sigma, and records fallback", {
   # Construct data with highly collinear concordant pairs so glmmTMB is
   # likely to produce a singular / non-PD fixed-effect covariance,
   # triggering the GLM fallback added in default.bclogit.R.
@@ -382,9 +387,12 @@ test_that("GLMM GLM-fallback triggers on near-degenerate concordant data and yie
   expect_false(anyNA(S))
   expect_equal(S, t(S), tolerance = 1e-10)
   expect_true(tryCatch({ chol(S); TRUE }, error = function(e) FALSE))
+  if (length(fit$prior_info$fallbacks) > 0L) {
+    expect_true("glm_fallback" %in% fit$prior_info$fallbacks)
+  }
 })
 
-test_that("GEE GLM-fallback triggers on near-degenerate concordant data and yields valid Sigma", {
+test_that("GEE GLM-fallback triggers on near-degenerate concordant data, yields valid Sigma, and records fallback", {
   set.seed(88)
   n_pairs <- 50
   strata    <- rep(seq_len(n_pairs), each = 2)
@@ -401,6 +409,9 @@ test_that("GEE GLM-fallback triggers on near-degenerate concordant data and yiel
   expect_false(anyNA(S))
   expect_equal(S, t(S), tolerance = 1e-10)
   expect_true(tryCatch({ chol(S); TRUE }, error = function(e) FALSE))
+  if (length(fit$prior_info$fallbacks) > 0L) {
+    expect_true("glm_fallback" %in% fit$prior_info$fallbacks)
+  }
 })
 
 test_that("bclogit falls back to diffuse prior when too few concordant pairs", {
@@ -429,6 +440,7 @@ test_that("bclogit falls back to diffuse prior when too few concordant pairs", {
   S <- fit$prior_info$Sigma
   expect_false(anyNA(S))
   expect_true(tryCatch({ chol(S); TRUE }, error = function(e) FALSE))
+  expect_true("insufficient_concordant_pairs" %in% fit$prior_info$fallbacks)
 })
 
 # =============================================================================

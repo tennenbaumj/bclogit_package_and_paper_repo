@@ -10,8 +10,9 @@
 #'     Only populated when \code{return_raw_stan_output = TRUE}; \code{NULL} otherwise.}
 #'   \item{concordant_model}{The fitted model object for the concordant pairs (GLM, GEE, or GLMM).}
 #'   \item{matched_data}{The processed matched pairs data from the C++ pre-modeling step.}
-#'   \item{prior_info}{A list with elements \code{mu} (prior mean vector) and \code{Sigma}
-#'     (prior covariance matrix) derived from the concordant pairs model.}
+#'   \item{prior_info}{A list with elements \code{mu} (prior mean vector), \code{Sigma}
+#'     (prior covariance matrix), and \code{fallbacks} (character vector of robustness
+#'     fallbacks triggered; \code{character(0)} if none).}
 #'   \item{call}{The function call.}
 #'   \item{terms}{The model terms.}
 #'   \item{xlevels}{Factor level information (always \code{NULL} for this method).}
@@ -184,11 +185,13 @@ bclogit.default <- function(formula = NULL,
   # --- Concordant Pairs / Reservoir Model ---
 
   concordant_model <- NULL
+  prior_fallbacks <- character(0)
 
   # Check for concordant pairs
   if (length(y_concordant) < ncol(X_concordant) + 5) {
     # Not enough data for concordant model
     warning("There are not enough concordant pairs or reservoir entries. The prior for the discordant pairs will be non-informative.")
+    prior_fallbacks <- c(prior_fallbacks, "insufficient_concordant_pairs")
     b_con <- rep(0, ncol(X_concordant) + 1)
     Sigma_con <- diag(101, ncol(X_concordant) + 1)
   } else {
@@ -287,12 +290,14 @@ bclogit.default <- function(formula = NULL,
   # Sanitize priors to ensure no NA values are passed
   if (exists("b_con") && any(is.na(b_con))) {
     b_con[is.na(b_con)] <- 0
+    prior_fallbacks <- c(prior_fallbacks, "na_in_prior_mean")
   }
   if (exists("Sigma_con")) {
     items_fixed <- FALSE
     if (any(is.na(Sigma_con))) {
       warning("Prior covariance contains NAs. Replacing with independent and diffuse prior.")
       Sigma_con <- diag(100, nrow(Sigma_con))
+      prior_fallbacks <- c(prior_fallbacks, "na_in_prior_covariance")
       items_fixed <- TRUE
     }
 
@@ -309,6 +314,7 @@ bclogit.default <- function(formula = NULL,
       if (!is_pd) {
         if (concordant_method == "GEE") {
           warning("GEE prior covariance is not positive definite (common with small clusters). Falling back to GLM covariance for the prior.")
+          prior_fallbacks <- c(prior_fallbacks, "glm_fallback")
           glm_fallback <- glm(y_concordant ~ treatment_concordant + X_concordant, family = "binomial")
           full_b_fb <- coef(glm_fallback)
           full_S_fb <- vcov(glm_fallback)
@@ -343,6 +349,7 @@ bclogit.default <- function(formula = NULL,
           Sigma_con <- (Sigma_con + t(Sigma_con)) / 2
         } else if (concordant_method == "GLMM") {
           warning("GLMM prior covariance is not positive definite (common with boundary variance estimates or convergence failures). Falling back to GLM covariance for the prior.")
+          prior_fallbacks <- c(prior_fallbacks, "glm_fallback")
           glm_fallback <- glm(y_concordant ~ treatment_concordant + X_concordant, family = "binomial")
           full_b_fb <- coef(glm_fallback)
           full_S_fb <- vcov(glm_fallback)
@@ -377,6 +384,7 @@ bclogit.default <- function(formula = NULL,
         } else {
           warning("Prior covariance is not positive definite. Replacing with independent and diffuse prior.")
           Sigma_con <- diag(100, nrow(Sigma_con))
+          prior_fallbacks <- c(prior_fallbacks, "diffuse_prior")
         }
       }
     }
@@ -493,7 +501,8 @@ bclogit.default <- function(formula = NULL,
     matched_data = matched_data,
     prior_info = list(
       mu = if (exists("b_con")) b_con else NULL,
-      Sigma = if (exists("Sigma_con")) Sigma_con else NULL
+      Sigma = if (exists("Sigma_con")) Sigma_con else NULL,
+      fallbacks = prior_fallbacks
     ),
 
     # Standard S3 components
