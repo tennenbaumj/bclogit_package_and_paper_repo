@@ -1,0 +1,43 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "bclogit: Bayesian Conditional Logistic Regression"
+version: 1.1.1
+date-released: "2026-09-01"
+authors:
+  - family-names: Kapelner
+    given-names: Adam
+    email: kapelner@qc.cuny.edu
+    orcid: "https://orcid.org/0000-0001-5985-6792"
+  - family-names: Tennenbaum
+    given-names: Jacob
+    email: Jacob.Tennenbaum51@qmail.cuny.edu
+    orcid: "https://orcid.org/0009-0006-1408-5035"
+repository-code: "https://github.com/tennenbaumj/bclogit_package_and_paper_repo"
+url: "https://tennenbaumj.github.io/bclogit_package_and_paper_repo/"
+license: GPL-3.0
+keywords:
+  - conditional logistic regression
+  - matched case-control
+  - concordant pairs
+  - Bayesian prior
+  - Stan
+  - epidemiology
+preferred-citation:
+  type: generic
+  title: "Improved Conditional Logistic Regression using Information in Concordant Pairs with Software"
+  authors:
+    - family-names: Kapelner
+      given-names: Adam
+    - family-names: Tennenbaum
+      given-names: Jacob
+  year: 2026
+  doi: "10.48550/arXiv.2602.08212"
+  url: "https://arxiv.org/abs/2602.08212"
+abstract: >
+  bclogit fits conditional logistic regression models for matched
+  case-control data that optionally incorporate information from
+  concordant pairs (and a reservoir of additional controls) as an
+  informative Bayesian prior, improving estimation of the discordant
+  pairs' effects. The package also provides a vanilla clogit()
+  implementation that runs 5-11x faster than survival::clogit().

@@ -1,0 +1,79 @@
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'bclogit/R/**'
+      - 'bclogit/man/**'
+      - 'bclogit/src/**'
+      - 'bclogit/inst/stan/**'
+      - 'bclogit/DESCRIPTION'
+      - 'bclogit/NAMESPACE'
+      - 'bclogit/_pkgdown.yml'
+      - 'bclogit/NEWS.md'
+      - '.github/workflows/pkgdown.yaml'
+  workflow_dispatch:
+
+name: pkgdown
+
+# Builds the pkgdown documentation site for the bclogit R package (in the
+# bclogit/ subdirectory of this repo, not the repo root) and publishes it to
+# GitHub Pages at https://tennenbaumj.github.io/bclogit_package_and_paper_repo/
+# (the URL bclogit/_pkgdown.yml already declares). Deployment uses the
+# GitHub-Actions-native Pages flow (upload-pages-artifact + deploy-pages)
+# rather than a gh-pages branch, so the repo's Pages setting must be
+# configured with build_type "workflow".
+#
+# Building the site requires installing the package, which compiles the
+# Rcpp/RcppParallel backend and the bundled Stan models -- this is slow, so
+# a generous timeout is set.
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  pkgdown:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: bclogit
+          extra-packages: any::pkgdown, local::.
+          needs: website
+
+      - name: Build pkgdown site
+        run: pkgdown::build_site_github_pages(pkg = "bclogit", new_process = FALSE, install = FALSE)
+        shell: Rscript {0}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: bclogit/docs
+
+  deploy:
+    needs: pkgdown
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

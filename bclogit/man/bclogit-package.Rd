@@ -17,8 +17,9 @@ Fits a conditional logistic regression model to incidence data. Allows for use o
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/Tennenbaum-J/bclogit_package_and_paper_repo}
-  \item Report bugs at \url{https://github.com/Tennenbaum-J/bclogit_package_and_paper_repo/issues}
+  \item \url{https://github.com/tennenbaumj/bclogit_package_and_paper_repo}
+  \item \url{https://tennenbaumj.github.io/bclogit_package_and_paper_repo/}
+  \item Report bugs at \url{https://github.com/tennenbaumj/bclogit_package_and_paper_repo/issues}
 }
 
 }

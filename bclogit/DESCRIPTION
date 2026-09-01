@@ -37,8 +37,8 @@ LinkingTo:
     RcppParallel (>= 5.0.1),
     rstan (>= 2.18.1),
     StanHeaders (>= 2.18.0)
-URL: https://github.com/Tennenbaum-J/bclogit_package_and_paper_repo
-BugReports: https://github.com/Tennenbaum-J/bclogit_package_and_paper_repo/issues
+URL: https://github.com/tennenbaumj/bclogit_package_and_paper_repo, https://tennenbaumj.github.io/bclogit_package_and_paper_repo/
+BugReports: https://github.com/tennenbaumj/bclogit_package_and_paper_repo/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Biarch: true

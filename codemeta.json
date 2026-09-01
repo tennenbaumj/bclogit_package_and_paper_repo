@@ -1,0 +1,56 @@
+{
+  "@context": "https://w3id.org/codemeta/3.0",
+  "@type": "SoftwareSourceCode",
+  "name": "bclogit: Bayesian Conditional Logistic Regression",
+  "description": "bclogit fits conditional logistic regression models for matched case-control data that optionally incorporate information from concordant pairs (and a reservoir of additional controls) as an informative Bayesian prior, improving estimation of the discordant pairs' effects. Priors can be built via GLM, GEE, or GLMM on the concordant data, with naive, G-prior, PMP, and hybrid prior options; posterior inference is fit in Stan. Also includes a vanilla clogit() implementation that runs 5-11x faster than survival::clogit().",
+  "version": "1.1.1",
+  "dateReleased": "2026-09-01",
+  "license": "https://spdx.org/licenses/GPL-3.0-only",
+  "codeRepository": "https://github.com/tennenbaumj/bclogit_package_and_paper_repo",
+  "issueTracker": "https://github.com/tennenbaumj/bclogit_package_and_paper_repo/issues",
+  "url": "https://tennenbaumj.github.io/bclogit_package_and_paper_repo/",
+  "programmingLanguage": [
+    {"@type": "ComputerLanguage", "name": "R"},
+    {"@type": "ComputerLanguage", "name": "C++"},
+    {"@type": "ComputerLanguage", "name": "Stan"}
+  ],
+  "keywords": [
+    "conditional logistic regression",
+    "matched case-control study",
+    "concordant pairs",
+    "Bayesian prior",
+    "Stan",
+    "epidemiology",
+    "biostatistics"
+  ],
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Adam",
+      "familyName": "Kapelner",
+      "email": "kapelner@qc.cuny.edu",
+      "@id": "https://orcid.org/0000-0001-5985-6792"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Jacob",
+      "familyName": "Tennenbaum",
+      "email": "Jacob.Tennenbaum51@qmail.cuny.edu",
+      "@id": "https://orcid.org/0009-0006-1408-5035"
+    }
+  ],
+  "maintainer": {
+    "@type": "Person",
+    "givenName": "Adam",
+    "familyName": "Kapelner",
+    "email": "kapelner@qc.cuny.edu",
+    "@id": "https://orcid.org/0000-0001-5985-6792"
+  },
+  "operatingSystem": ["Linux", "macOS", "Windows"],
+  "softwareRequirements": [
+    "R (>= 4.0)"
+  ],
+  "relatedLink": [
+    "https://tennenbaumj.github.io/bclogit_package_and_paper_repo/"
+  ]
+}
