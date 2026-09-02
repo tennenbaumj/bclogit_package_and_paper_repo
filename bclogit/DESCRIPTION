@@ -39,6 +39,9 @@ LinkingTo:
     StanHeaders (>= 2.18.0)
 URL: https://github.com/tennenbaumj/bclogit_package_and_paper_repo, https://tennenbaumj.github.io/bclogit_package_and_paper_repo/
 BugReports: https://github.com/tennenbaumj/bclogit_package_and_paper_repo/issues
+X-schema.org-keywords: bayesian-statistics, conditional-logistic-regression,
+    matched-case-control-studies, matched-pairs, concordant-pairs,
+    informative-priors, epidemiology, biostatistics, binary-outcomes, stan
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Biarch: true
