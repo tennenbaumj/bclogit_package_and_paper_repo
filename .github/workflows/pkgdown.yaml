@@ -9,6 +9,7 @@ on:
       - 'bclogit/DESCRIPTION'
       - 'bclogit/NAMESPACE'
       - 'bclogit/_pkgdown.yml'
+      - 'bclogit/pkgdown/**'
       - 'bclogit/NEWS.md'
       - '.github/workflows/pkgdown.yaml'
   workflow_dispatch:

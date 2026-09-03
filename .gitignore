@@ -1,7 +1,6 @@
 node_modules/
 bclogit.Rcheck/
 bclogit/docs/
-bclogit/pkgdown/
 *.log
 bclogit_*.tar.gz
 .vscode/

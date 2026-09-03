@@ -1,4 +1,4 @@
-# bclogit
+# bclogit <img src="bclogit/man/figures/logo.png" align="right" height="139" alt="bclogit hex logo" />
 
 **Conditional Logistic Regression with Optional Concordant Pairs**
 
