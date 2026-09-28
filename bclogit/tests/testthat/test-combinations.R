@@ -10,7 +10,7 @@ P <- 2
 test_that("All combinations of concordant_method and prior_type work", {
   skip_if_no_stan()
 
-  concordant_methods <- c("GLM", "GEE", "GLMM")
+  concordant_methods <- c("GLM", "GEE", if (requireNamespace("glmmTMB", quietly = TRUE)) "GLMM")
   prior_types <- c("Naive", "G prior", "PMP", "Hybrid")
 
   dat <- generate_test_data(n_pairs = N_PAIRS, p = P, seed = 123)
@@ -55,7 +55,7 @@ test_that("bclogit.formula works for all combinations", {
   # Just test a subset to keep it from being too slow, 
   # but enough to ensure formula interface works.
   # Or test all if it's not too bad.
-  concordant_methods <- c("GLM", "GEE", "GLMM")
+  concordant_methods <- c("GLM", "GEE", if (requireNamespace("glmmTMB", quietly = TRUE)) "GLMM")
   prior_types <- c("Naive", "G prior", "PMP", "Hybrid")
 
   dat <- generate_test_data(n_pairs = N_PAIRS, p = P, seed = 456)

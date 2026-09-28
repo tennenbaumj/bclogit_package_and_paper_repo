@@ -12,6 +12,8 @@
 #' @param na.action A function which indicates what should happen when the data contain NAs. 
 #' @param X A data.frame, data.table, or model.matrix containing the variables (optional for formula method, required for default method).
 #' @param concordant_method The method to use for fitting the concordant pairs and reservoir. Options are "GLM", "GEE", and "GLMM".
+#'   "GLMM" requires the suggested package \pkg{glmmTMB}; if it is not available from CRAN, install it via
+#'   \code{install.packages("glmmTMB", repos = c("https://glmmtmb.r-universe.dev", "https://cloud.r-project.org"))}.
 #' @param prior_type The type of prior to use for the discordant pairs. Options are "Naive", "G prior", "PMP", and "Hybrid".
 #' @param chains Number of chains for Stan sampling. Default is 4.
 #' @param treatment_name Optional string name for the treatment variable.

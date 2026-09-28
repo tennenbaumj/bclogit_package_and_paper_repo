@@ -8,7 +8,6 @@
   "license": "https://spdx.org/licenses/GPL-3.0-only",
   "codeRepository": "https://github.com/tennenbaumj/bclogit_package_and_paper_repo",
   "issueTracker": "https://github.com/tennenbaumj/bclogit_package_and_paper_repo/issues",
-  "url": "https://tennenbaumj.github.io/bclogit_package_and_paper_repo/",
   "programmingLanguage": [
     {"@type": "ComputerLanguage", "name": "R"},
     {"@type": "ComputerLanguage", "name": "C++"},
@@ -48,9 +47,6 @@
   },
   "operatingSystem": ["Linux", "macOS", "Windows"],
   "softwareRequirements": [
-    "R (>= 4.0)"
-  ],
-  "relatedLink": [
-    "https://tennenbaumj.github.io/bclogit_package_and_paper_repo/"
+    "R (>= 4.1.0)"
   ]
 }

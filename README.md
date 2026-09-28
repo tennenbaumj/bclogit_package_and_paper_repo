@@ -2,10 +2,6 @@
 
 **Conditional Logistic Regression with Optional Concordant Pairs**
 
-[![pkgdown](https://github.com/tennenbaumj/bclogit_package_and_paper_repo/actions/workflows/pkgdown.yaml/badge.svg)](https://tennenbaumj.github.io/bclogit_package_and_paper_repo/)
-
-Full documentation and function reference: **https://tennenbaumj.github.io/bclogit_package_and_paper_repo/**
-
 ## Overview
 
 `bclogit` is an R package for fitting conditional logistic regression models that can optionally incorporate information from concordant pairs (and a reservoir of additional controls) to improve estimation of discordant pairs. This approach effectively uses a Bayesian prior derived from the concordant data to inform the discordant pairs analysis, suitable for matched case-control studies where data sparsity might be an issue.
@@ -61,7 +57,7 @@ confint(fit)
 - **Standard Formula Interface**: Works like `glm` or `lm`.
 - **Bayesian Prior Integration**: Uses `rstan` to fit models with informative priors.
 - **Multiple Prior Types**: Supports "naive", "G prior", "PMP", and "hybrid".
-- **Concordant Pairs Method**: Supports "GLM", "GEE", and "GLMM" for the concordant pairs step.
+- **Concordant Pairs Method**: Supports "GLM", "GEE", and "GLMM" for the concordant pairs step. "GLMM" requires the optional `glmmTMB` package; if it is not on CRAN, install it with `install.packages("glmmTMB", repos = c("https://glmmtmb.r-universe.dev", "https://cloud.r-project.org"))`.
 - We also implemented vanilla `clogit` which runs with a 5–10x speedup over `survival::clogit`. If you only want inference on the `j`th variable, you can set `do_inference_on_var = j` which gives the best speedup at large n: 9–11x at 10k–50k pairs.
 
 ## Citation

@@ -9,3 +9,8 @@
         )
     )
 }
+
+# glmmTMB is in Suggests (it may be archived on CRAN); wrapped so tests can mock it
+glmmTMB_available <- function() {
+    requireNamespace("glmmTMB", quietly = TRUE)
+}

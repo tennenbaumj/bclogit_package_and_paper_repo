@@ -70,6 +70,15 @@ bclogit.default <- function(formula = NULL,
 
   n <- nrow(data_mat)
   assertChoice(concordant_method, c("GLM", "GEE", "GLMM"))
+  if (concordant_method == "GLMM" && !glmmTMB_available()) {
+    stop(
+      "concordant_method = \"GLMM\" requires the 'glmmTMB' package, which is not installed.\n",
+      "glmmTMB may not be available on CRAN. Install it from its r-universe repository with:\n\n",
+      "  install.packages(\"glmmTMB\", repos = c(\"https://glmmtmb.r-universe.dev\", \"https://cloud.r-project.org\"))\n\n",
+      "Alternatively, use concordant_method = \"GLM\" or \"GEE\".",
+      call. = FALSE
+    )
+  }
 
   # Relaxed assertions to allow factors/characters, then convert
   assertVector(y, any.missing = FALSE, len = n)

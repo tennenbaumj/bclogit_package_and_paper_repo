@@ -72,7 +72,9 @@ bclogit(
 
 \item{na.action}{A function which indicates what should happen when the data contain NAs.}
 
-\item{concordant_method}{The method to use for fitting the concordant pairs and reservoir. Options are "GLM", "GEE", and "GLMM".}
+\item{concordant_method}{The method to use for fitting the concordant pairs and reservoir. Options are "GLM", "GEE", and "GLMM".
+"GLMM" requires the suggested package \pkg{glmmTMB}; if it is not available from CRAN, install it via
+\code{install.packages("glmmTMB", repos = c("https://glmmtmb.r-universe.dev", "https://cloud.r-project.org"))}.}
 
 \item{prior_type}{The type of prior to use for the discordant pairs. Options are "Naive", "G prior", "PMP", and "Hybrid".}
 

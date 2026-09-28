@@ -15,3 +15,6 @@ check_output_2.log
 *.dll
 
 # Auto-generated Rcpp files
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/

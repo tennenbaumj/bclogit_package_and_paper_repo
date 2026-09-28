@@ -238,6 +238,7 @@ test_that("bclogit with GEE concordant method fits successfully", {
 
 test_that("bclogit with GLMM concordant method fits successfully", {
   skip_if_no_stan()
+  skip_if_not_installed("glmmTMB")
 
   dat <- generate_test_data(n_pairs = 60, p = 2, seed = 123)
   fit <- bclogit_default(
@@ -247,6 +248,19 @@ test_that("bclogit with GLMM concordant method fits successfully", {
   )
   expect_s3_class(fit, "bclogit")
   expect_true(!is.null(fit$coefficients))
+})
+
+test_that("GLMM without glmmTMB installed errors with install instructions", {
+  local_mocked_bindings(glmmTMB_available = function() FALSE, .package = "bclogit")
+  dat <- generate_test_data(n_pairs = 60, p = 2, seed = 123)
+  expect_error(
+    bclogit_default(
+      y = dat$y, X = dat$X, treatment = dat$treatment,
+      strata = dat$strata, concordant_method = "GLMM", chains = 1
+    ),
+    "glmmtmb.r-universe.dev",
+    fixed = TRUE
+  )
 })
 
 test_that("bclogit with data.frame X input works", {
@@ -435,6 +449,7 @@ test_that("confint.bclogit HPD_one type returns correct structure", {
 
 test_that("confint.bclogit HPD_many type returns matrix", {
   skip_if_no_stan()
+  skip_if_not_installed("ggdist")
   skip_if(is.null(fit_naive), "Model not fitted")
 
   ci <- confint(fit_naive, type = "HPD_many")

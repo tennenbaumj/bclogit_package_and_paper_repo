@@ -14,7 +14,6 @@ authors:
     email: Jacob.Tennenbaum51@qmail.cuny.edu
     orcid: "https://orcid.org/0009-0006-1408-5035"
 repository-code: "https://github.com/tennenbaumj/bclogit_package_and_paper_repo"
-url: "https://tennenbaumj.github.io/bclogit_package_and_paper_repo/"
 license: GPL-3.0
 keywords:
   - conditional logistic regression
